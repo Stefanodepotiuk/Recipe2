@@ -1,7 +1,9 @@
 package com.example.recipe2.controllers;
 
-import com.example.recipe2.dao.IngredientDAO;
-import com.example.recipe2.models.IngredientModel;
+
+import com.example.recipe2.models.dto.IngredientDTO;
+import com.example.recipe2.models.entity.IngredientModel;
+import com.example.recipe2.services.IngredientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,39 +15,31 @@ import java.util.List;
 @RequestMapping("/ingredients")
 @AllArgsConstructor
 public class IngredientController {
-    private IngredientDAO ingredientDAO;
+    IngredientService ingredientService;
 
     @GetMapping
-    public ResponseEntity<List<IngredientModel>> getAll() {
-        return new ResponseEntity<>(ingredientDAO.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<IngredientDTO>> getAll() {
+        return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IngredientModel> findById(@PathVariable int id) {
-        IngredientModel model = ingredientDAO.findById(id).orElse(new IngredientModel());
-        if (model.getId() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(model,HttpStatus.OK);
+    public ResponseEntity<IngredientDTO> findById(@PathVariable int id) {
+        return new ResponseEntity<>(ingredientService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public List<IngredientModel> create(@RequestBody IngredientModel model) {
-        ingredientDAO.save(model);
-        return ingredientDAO.findAll();
+    public ResponseEntity<IngredientDTO> create(@RequestBody IngredientModel ingredient) {
+        return new ResponseEntity<>(ingredientService.createIngredient(ingredient), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    public IngredientModel update(@PathVariable int id, @RequestBody IngredientModel model) {
-        model.setId(id);
-        ingredientDAO.save(model);
-        return model;
+    public ResponseEntity<IngredientDTO> update(@PathVariable int id, @RequestBody IngredientModel ingredient) {
+        return new ResponseEntity<>(ingredientService.upDateIngredient(id, ingredient), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public List<IngredientModel> delete(@PathVariable int id) {
-        ingredientDAO.deleteById(id);
-        return ingredientDAO.findAll();
+    public ResponseEntity<List<IngredientDTO>> delete(@PathVariable int id) {
+        return new ResponseEntity<>(ingredientService.deleteIngredient(id), HttpStatus.OK);
     }
 
 }
