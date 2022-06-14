@@ -1,7 +1,10 @@
 package com.example.recipe2.models.dto;
 
 import com.example.recipe2.models.entity.IngredientModel;
+import com.example.recipe2.models.entity.RecipeModel;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class IngredientDTO {
@@ -45,6 +48,8 @@ public class IngredientDTO {
     private float manganese;
     private float selenium;
 
+    private List<RecipeModel> recipeModels;
+
     public IngredientDTO(IngredientModel ingredient) {
         this.id = ingredient.getId();
         this.type = ingredient.getType();
@@ -85,6 +90,6 @@ public class IngredientDTO {
         this.zinc = ingredient.getZinc();
         this.manganese = ingredient.getManganese();
         this.selenium = ingredient.getSelenium();
-
+        this.recipeModels= ingredient.getRecipeModels();
     }
 }
