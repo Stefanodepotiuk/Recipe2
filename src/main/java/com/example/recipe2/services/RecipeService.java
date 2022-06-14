@@ -1,19 +1,17 @@
 package com.example.recipe2.services;
 
 
-import com.example.recipe2.dao.IngredientDAO;
 import com.example.recipe2.dao.RecipeDAO;
 
 import com.example.recipe2.models.dto.RecipeDTO;
 
-import com.example.recipe2.models.dto.RecipeWithIDhuk;
+import com.example.recipe2.models.dto.RecipeWithId;
 import com.example.recipe2.models.entity.IngredientModel;
 import com.example.recipe2.models.entity.RecipeModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +19,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class RecipeService {
     private RecipeDAO recipeDAO;
-    private IngredientDAO ingredientDAO;
     IngredientService ingredientService;
 
     public List<RecipeDTO> getAll() {
@@ -34,28 +31,31 @@ public class RecipeService {
         return new RecipeDTO(recipe);
     }
 
-    public RecipeDTO createRecipe(RecipeWithIDhuk recipe) {
-        ArrayList<IngredientModel> models = new ArrayList<>();
+    public RecipeDTO createRecipe(RecipeWithId recipe) {
+        RecipeModel newRecipe = new RecipeModel(recipe.getTitle(), recipe.getDescription(), recipe.getCategory(), recipe.getImage(), recipe.getRating());
+        recipe.getIngredients()
+                .forEach(item -> {
+                    IngredientModel ingredient = ingredientService.findFullIngredient(item.getIngredient_id());
+                    newRecipe.setIngredient(ingredient, item.getQuantity());
+                });
 
-        System.out.println(recipe.getIds());
+        return new RecipeDTO(recipeDAO.save(newRecipe));
 
-        for (Integer id : recipe.getIds()) {
-            models.add(ingredientDAO.findById(id).get());
-        }
-
-        RecipeModel recipeModel = new RecipeModel();
-
-        recipeModel.setTitle(recipe.getTitle());
-        recipeModel.setDescription(recipe.getDescription());
-        recipeModel.setCategory(recipe.getCategory());
-        recipeModel.setRating(recipe.getRating());
-        recipeModel.setIngredient(models);
-
-        recipeDAO.save(recipeModel);
-        System.out.println(recipeModel);
-        System.out.println(models);
-
-        return new RecipeDTO(recipeModel);
+//        ArrayList<IngredientModel> models = new ArrayList<>();
+//        for (Integer id : recipe.getIds()) {
+//            models.add(ingredientDAO.findById(id).get());
+//        }
+//
+//        RecipeModel recipeModel = new RecipeModel();
+//
+//        recipeModel.setTitle(recipe.getTitle());
+//        recipeModel.setDescription(recipe.getDescription());
+//        recipeModel.setCategory(recipe.getCategory());
+//        recipeModel.setRating(recipe.getRating());
+//        recipeModel.setIngredient(models,);
+//
+//        recipeDAO.save(recipeModel);
+//        return new RecipeDTO(recipeModel);
     }
 
     public RecipeDTO upDateRecipe(int id, RecipeModel recipe) {

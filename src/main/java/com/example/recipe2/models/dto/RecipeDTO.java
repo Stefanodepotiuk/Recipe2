@@ -1,6 +1,5 @@
 package com.example.recipe2.models.dto;
 
-import com.example.recipe2.models.entity.IngredientModel;
 import com.example.recipe2.models.entity.RecipeModel;
 import lombok.*;
 
@@ -9,9 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@NoArgsConstructor
-@Setter
-@Getter
+@Data
 public class RecipeDTO {
     private int id;
     private String image;
@@ -20,7 +17,7 @@ public class RecipeDTO {
     private String category;
     private int rating;
 
-    private List<IngredientDTO> ingredient;
+    private List<IngredientDTO> ingredient = new ArrayList<>();
 
     public RecipeDTO(RecipeModel recipe) {
         this.id = recipe.getId();
@@ -30,19 +27,21 @@ public class RecipeDTO {
         this.category = recipe.getCategory();
         this.rating = recipe.getRating();
 
-        List<IngredientDTO> IngredientsDTOList = new ArrayList<>();
-        List<IngredientModel> ingredients = new ArrayList<>(recipe.getIngredient());
-        for (IngredientModel model : ingredients) {
-            IngredientsDTOList.add(new IngredientDTO(model));
-        }
-        this.ingredient = new ArrayList<>(IngredientsDTOList);
 
-//        if (recipe.getIngredient() != null) {
-//            this.ingredient = recipe.getIngredient()
-//                    .stream()
-//                    .map(IngredientDTO::new)
-//                    .collect(Collectors.toList());
+//        List<IngredientDTO> IngredientsDTOList = new ArrayList<>();
+//        List<IngredientModel> ingredients = new ArrayList<>(recipe.getIngredient());
+//        for (IngredientModel model : ingredients) {
+//            IngredientsDTOList.add(new IngredientDTO(model));
 //        }
+//        this.ingredient = new ArrayList<>(IngredientsDTOList);
+
+        if (recipe.getIngredientQuantities() != null) {
+            this.ingredient = recipe.getIngredientQuantities()
+                    .stream()
+                    .map(item -> new IngredientDTO(item.getIngredient(), item.getQuantity()))
+
+                    .collect(Collectors.toList());
+        }
     }
 
 }

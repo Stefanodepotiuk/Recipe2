@@ -1,7 +1,7 @@
 package com.example.recipe2.controllers;
 
 import com.example.recipe2.models.dto.RecipeDTO;
-import com.example.recipe2.models.dto.RecipeWithIDhuk;
+import com.example.recipe2.models.dto.RecipeWithId;
 import com.example.recipe2.models.entity.RecipeModel;
 import com.example.recipe2.services.RecipeService;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<RecipeDTO> upDate(@RequestBody RecipeWithIDhuk recipe) {
+    public ResponseEntity<RecipeDTO> upDate(@RequestBody RecipeWithId recipe) {
         return new ResponseEntity<>(recipeService.createRecipe(recipe), HttpStatus.OK);
     }
 

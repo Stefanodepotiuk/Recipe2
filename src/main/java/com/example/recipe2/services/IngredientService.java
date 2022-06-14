@@ -41,4 +41,9 @@ public class IngredientService {
         List<IngredientModel> all = ingredientDAO.findAll();
         return all.stream().map(IngredientDTO::new).collect(Collectors.toList());
     }
+
+    public IngredientModel findFullIngredient (int id) {
+        IngredientModel ingredient = ingredientDAO.findIngredientById(id);
+        return ingredient;
+    }
 }

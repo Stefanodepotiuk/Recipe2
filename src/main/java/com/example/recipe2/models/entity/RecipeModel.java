@@ -24,12 +24,21 @@ public class RecipeModel {
     private String category;
     private int rating;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @ToString.Exclude
-    @JoinTable(
-            name = "recipe_ingredient",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<IngredientModel> ingredient = new ArrayList<>();
+    private List<IngredientQuantity> ingredientQuantities = new ArrayList<>();
+
+    public RecipeModel(String image, String title, String description, String category, int rating) {
+        this.image = image;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.rating = rating;
+    }
+
+    public void setIngredient(IngredientModel ingredient, int quantity) {
+        IngredientQuantity ingredientQuantity = new IngredientQuantity(this, ingredient, quantity);
+        ingredientQuantities.add(ingredientQuantity);
+        ingredient.getIngredientQuantities().add(ingredientQuantity);
+    }
 }

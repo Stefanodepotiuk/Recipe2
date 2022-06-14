@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -56,12 +57,10 @@ public class IngredientModel {
     private float manganese;
     private float selenium;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "recipe_ingredient",
-            joinColumns = @JoinColumn(name = "ingredient_id"),
-            inverseJoinColumns = @JoinColumn(name = "recipe_id")
-    )
+    @OneToMany(
+            mappedBy = "ingredient",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @ToString.Exclude
-    private List<RecipeModel> recipeModels;
+    private List<IngredientQuantity> ingredientQuantities = new ArrayList<>();
 }
