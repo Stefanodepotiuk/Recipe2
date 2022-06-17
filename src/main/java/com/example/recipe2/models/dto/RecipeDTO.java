@@ -19,6 +19,8 @@ public class RecipeDTO {
     private List<CategoryDTO> category = new ArrayList<>();
     private List<IngredientDTO> ingredient = new ArrayList<>();
 
+
+
     public RecipeDTO(RecipeModel recipe) {
         this.id = recipe.getId();
         this.image = recipe.getImage();

@@ -42,8 +42,12 @@ public class RecipeService {
                         .getCategory()
                         .stream()
                         .map(ing -> {
+                            System.out.println(ing.getId());
+                            System.out.println(ing);
+
                             CategoryModel fullCategory = categoryService.findFullCategory(ing.getId());
                             fullCategory.getRecipe().add(newRecipe);
+                            System.out.println(fullCategory);
                             return fullCategory;
 
                         }).collect(Collectors.toList()));

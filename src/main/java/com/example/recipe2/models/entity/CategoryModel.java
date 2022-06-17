@@ -30,4 +30,6 @@ public class CategoryModel {
     @ToString.Exclude
     private List<RecipeModel> recipe = new ArrayList<>();
 
+
+
 }

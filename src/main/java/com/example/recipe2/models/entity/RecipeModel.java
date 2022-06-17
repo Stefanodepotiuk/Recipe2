@@ -32,12 +32,13 @@ public class RecipeModel {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @ToString.Exclude
-    private List<CategoryModel> category ;
+    private List<CategoryModel> category = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<IngredientQuantity> ingredientQuantities = new ArrayList<>();
+
 
     public RecipeModel(String image, String title, String description, int rating) {
         this.image = image;
