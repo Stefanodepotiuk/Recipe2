@@ -1,5 +1,6 @@
 package com.example.recipe2.models.dto;
 
+import com.example.recipe2.models.entity.CategoryModel;
 import com.example.recipe2.models.entity.RecipeModel;
 import lombok.*;
 
@@ -14,9 +15,8 @@ public class RecipeDTO {
     private String image;
     private String title;
     private String description;
-    private String category;
     private int rating;
-
+    private List<CategoryDTO> category = new ArrayList<>();
     private List<IngredientDTO> ingredient = new ArrayList<>();
 
     public RecipeDTO(RecipeModel recipe) {
@@ -24,22 +24,20 @@ public class RecipeDTO {
         this.image = recipe.getImage();
         this.title = recipe.getTitle();
         this.description = recipe.getDescription();
-        this.category = recipe.getCategory();
         this.rating = recipe.getRating();
 
-
-//        List<IngredientDTO> IngredientsDTOList = new ArrayList<>();
-//        List<IngredientModel> ingredients = new ArrayList<>(recipe.getIngredient());
-//        for (IngredientModel model : ingredients) {
-//            IngredientsDTOList.add(new IngredientDTO(model));
-//        }
-//        this.ingredient = new ArrayList<>(IngredientsDTOList);
+        this.category = recipe.getCategory()
+                .stream()
+                .map(CategoryDTO::new)
+                .collect(Collectors.toList());
+//                .stream()
+//                .map(model -> new CategoryDTO(model.getCategory()))
+//                .collect(Collectors.toList());
 
         if (recipe.getIngredientQuantities() != null) {
             this.ingredient = recipe.getIngredientQuantities()
                     .stream()
                     .map(item -> new IngredientDTO(item.getIngredient(), item.getQuantity()))
-
                     .collect(Collectors.toList());
         }
     }

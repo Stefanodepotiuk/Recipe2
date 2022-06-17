@@ -1,5 +1,6 @@
 package com.example.recipe2.models.entity;
 
+import com.example.recipe2.models.dto.CategoryDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,18 +22,27 @@ public class RecipeModel {
     private String image;
     private String title;
     private String description;
-    private String category;
+
     private int rating;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    @ToString.Exclude
+    private List<CategoryModel> category ;
+
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<IngredientQuantity> ingredientQuantities = new ArrayList<>();
 
-    public RecipeModel(String image, String title, String description, String category, int rating) {
+    public RecipeModel(String image, String title, String description, int rating) {
         this.image = image;
         this.title = title;
         this.description = description;
-        this.category = category;
         this.rating = rating;
     }
 
@@ -41,4 +51,9 @@ public class RecipeModel {
         ingredientQuantities.add(ingredientQuantity);
         ingredient.getIngredientQuantities().add(ingredientQuantity);
     }
+
+
+//    public void setCategory(CategoryModel setCategory) {
+//
+//    }
 }

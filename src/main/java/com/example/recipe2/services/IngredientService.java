@@ -43,7 +43,6 @@ public class IngredientService {
     }
 
     public IngredientModel findFullIngredient (int id) {
-        IngredientModel ingredient = ingredientDAO.findIngredientById(id);
-        return ingredient;
+        return ingredientDAO.findIngredientById(id);
     }
 }
