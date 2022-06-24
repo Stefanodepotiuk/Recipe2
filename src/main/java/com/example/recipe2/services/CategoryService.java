@@ -2,6 +2,7 @@ package com.example.recipe2.services;
 
 import com.example.recipe2.dao.CategoryDAO;
 import com.example.recipe2.models.dto.CategoryDTO;
+import com.example.recipe2.models.dto.CategoryWithFetch_RecipeDTO;
 import com.example.recipe2.models.entity.CategoryModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,11 @@ public class CategoryService {
     public CategoryModel findFullCategory (int id) {
         return categoryDAO.findCategoryModelById(id);
     }
+
+    public List<CategoryWithFetch_RecipeDTO> search_CategoryWithFetch_Recipe(int id) {
+        List<CategoryModel> categoryModelList = categoryDAO.customQueryCategoryWithFetch_Recipe(id);
+        return  categoryModelList.stream().map(CategoryWithFetch_RecipeDTO::new).collect(Collectors.toList());
+
+    }
+
 }

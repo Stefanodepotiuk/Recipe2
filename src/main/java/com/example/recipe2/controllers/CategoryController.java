@@ -1,6 +1,7 @@
 package com.example.recipe2.controllers;
 
 import com.example.recipe2.models.dto.CategoryDTO;
+import com.example.recipe2.models.dto.CategoryWithFetch_RecipeDTO;
 import com.example.recipe2.models.entity.CategoryModel;
 import com.example.recipe2.services.CategoryService;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,11 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<List<CategoryDTO>> delete(@PathVariable int id){
         return new ResponseEntity<>(categoryService.deleteCategory(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{id}")
+    public List<CategoryWithFetch_RecipeDTO> search_CategoryWithFetch_Recipe(@PathVariable int id){
+        return categoryService.search_CategoryWithFetch_Recipe(id);
     }
 }
 

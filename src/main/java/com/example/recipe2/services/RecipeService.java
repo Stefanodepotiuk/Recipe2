@@ -1,6 +1,5 @@
 package com.example.recipe2.services;
 
-
 import com.example.recipe2.dao.RecipeDAO;
 
 import com.example.recipe2.models.dto.RecipeDTO;
@@ -9,7 +8,9 @@ import com.example.recipe2.models.dto.RecipeWithId;
 import com.example.recipe2.models.entity.CategoryModel;
 import com.example.recipe2.models.entity.IngredientModel;
 import com.example.recipe2.models.entity.RecipeModel;
+import com.example.recipe2.models.pagination.RecipePage;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 
@@ -23,10 +24,13 @@ public class RecipeService {
     IngredientService ingredientService;
     CategoryService categoryService;
 
-    public List<RecipeDTO> getAll() {
-        List<RecipeModel> recipe = recipeDAO.findAll();
-        return recipe.stream().map(RecipeDTO::new).collect(Collectors.toList());
+
+    public List<RecipeDTO> getAll(RecipePage recipePage) {
+        PageRequest of = PageRequest.of(recipePage.getPage(), recipePage.getSize());
+
+        return recipeDAO.findAll(of).getContent().stream().map(RecipeDTO::new).collect(Collectors.toList());
     }
+
 
     public RecipeDTO getById(int id) {
         RecipeModel recipe = recipeDAO.findById(id).orElse(new RecipeModel());
@@ -42,20 +46,11 @@ public class RecipeService {
                         .getCategory()
                         .stream()
                         .map(ing -> {
-                            System.out.println(ing.getId());
-                            System.out.println(ing);
-
                             CategoryModel fullCategory = categoryService.findFullCategory(ing.getId());
                             fullCategory.getRecipe().add(newRecipe);
-                            System.out.println(fullCategory);
                             return fullCategory;
 
                         }).collect(Collectors.toList()));
-//        recipe.getCategory()
-//                .forEach(item -> {
-//                    CategoryModel fullCategory = categoryService.findFullCategory(item.getId());
-//                    //newRecipe.setCategory(category);
-//                });
 
         recipe.getIngredients()
                 .forEach(item -> {

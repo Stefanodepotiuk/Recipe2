@@ -1,6 +1,5 @@
 package com.example.recipe2.models.entity;
 
-import com.example.recipe2.models.dto.CategoryDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -53,8 +52,4 @@ public class RecipeModel {
         ingredient.getIngredientQuantities().add(ingredientQuantity);
     }
 
-
-//    public void setCategory(CategoryModel setCategory) {
-//
-//    }
 }

@@ -3,6 +3,7 @@ package com.example.recipe2.controllers;
 import com.example.recipe2.models.dto.RecipeDTO;
 import com.example.recipe2.models.dto.RecipeWithId;
 import com.example.recipe2.models.entity.RecipeModel;
+import com.example.recipe2.models.pagination.RecipePage;
 import com.example.recipe2.services.RecipeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,16 @@ import java.util.List;
 public class RecipeController {
     RecipeService recipeService;
 
+//    @GetMapping
+//    public ResponseEntity<List<RecipeDTO>> getAll() {
+//        return new ResponseEntity<>(recipeService.getAll(), HttpStatus.OK);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<RecipeDTO>> getAll() {
-        return new ResponseEntity<>(recipeService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<RecipeDTO>> getAll(RecipePage recipePage) {
+        return new ResponseEntity<>(recipeService.getAll(recipePage), HttpStatus.OK);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<RecipeDTO> findById(@PathVariable int id) {

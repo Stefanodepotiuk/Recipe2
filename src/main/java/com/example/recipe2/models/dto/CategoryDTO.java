@@ -23,9 +23,6 @@ public class CategoryDTO {
         this.id = category.getId();
         this.category = category.getCategory();
 
-        System.out.println(this.category);
-        System.out.println(this.id);
-        System.out.println(category);
 //        this.recipe = category.getRecipe()
 //                .stream()
 //                .map(RecipeDTO::new)

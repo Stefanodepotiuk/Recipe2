@@ -1,44 +1,47 @@
 package com.example.recipe2.models.dto;
 
 import com.example.recipe2.models.entity.RecipeModel;
-import lombok.*;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Data
-public class RecipeDTO {
+public class RecipeWithgredientDTO {
+
     private int id;
-    private String image;
     private String title;
     private String description;
+    private List<CategoryDTO> category = new ArrayList<>();
     private int rating;
-    private List<CategoryDTO> category ;
-    private List<IngredientDTO> ingredient = new ArrayList<>();
+    private List<IngredientDTO> ingredients = new ArrayList<>();
 
-
-
-    public RecipeDTO(RecipeModel recipe) {
+    public RecipeWithgredientDTO(RecipeModel recipe) {
         this.id = recipe.getId();
-        this.image = recipe.getImage();
         this.title = recipe.getTitle();
         this.description = recipe.getDescription();
         this.rating = recipe.getRating();
-
-        this.category = recipe.getCategory()
+        this.ingredients = recipe.getIngredientQuantities()
                 .stream()
-                .map(CategoryDTO::new)
+                .map(item -> new IngredientDTO(item.getIngredient(), item.getQuantity()))
                 .collect(Collectors.toList());
+    }
 
 
+    public RecipeWithgredientDTO(RecipeModel recipe, List<CategoryDTO> categoryDTOS) {
+        this.id = recipe.getId();
+        this.title = recipe.getTitle();
+        this.description = recipe.getDescription();
+        this.rating = recipe.getRating();
         if (recipe.getIngredientQuantities() != null) {
-            this.ingredient = recipe.getIngredientQuantities()
+            this.ingredients = recipe.getIngredientQuantities()
                     .stream()
                     .map(item -> new IngredientDTO(item.getIngredient(), item.getQuantity()))
                     .collect(Collectors.toList());
         }
+        this.category = categoryDTOS;
     }
 
 }
+
