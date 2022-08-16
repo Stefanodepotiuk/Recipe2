@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RecipePage {
-    private int page = 5;
-    private int size = 5;
+    private int page;
+    private int size;
 }
